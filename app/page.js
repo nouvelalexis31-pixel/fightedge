@@ -9,6 +9,7 @@ import { agg, dayKey as dk, addDays, eur, pc } from "@/lib/perf";
 import { PickCard } from "@/components/PickCard";
 import { MatchCard } from "@/components/MatchCard";
 import { Setup } from "@/components/Setup";
+import NoOdds from "@/components/NoOdds";
 import { dayKey, fmtDateTime, fmtTime, odd, signed, todayKey } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -22,9 +23,9 @@ const Head = ({ t, href, more = "Tout voir" }) => (
 
 export default async function Home() {
   const data = await loadEnriched();
-  if (data.error && data.matches.length === 0) return <Setup msg={data.error} />;
+  if (data.error && data.matches.length === 0) return <NoOdds msg={data.error} title="Pronos IA et analyses du jour" />;
   const all = data.matches;
-  if (all.length === 0) return <Setup msg={data.error || "Aucun match avec cotes pour le moment."} />;
+  if (all.length === 0) return <NoOdds msg={data.error || "aucun match coté pour le moment"} title="Pronos IA et analyses du jour" />;
   const now = Date.now();
   const today = todayKey();
   const upcoming = all.filter((m) => +new Date(m.start) > now - 3 * 3600e3);

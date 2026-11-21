@@ -7,6 +7,7 @@ import { goalPicks } from "@/lib/goals";
 import { ComboCard } from "@/components/ComboCard";
 import { PickCard } from "@/components/PickCard";
 import { Setup } from "@/components/Setup";
+import NoOdds from "@/components/NoOdds";
 import { KIND } from "@/components/Ui";
 import { Scorers } from "@/components/Scorers";
 import Link from "next/link";
@@ -38,7 +39,7 @@ export const dynamic = "force-dynamic";
 export default async function Pronos() {
   const data = await loadEnriched();
   after(async () => { try { if (data.matches?.length) await recordPicks(data.matches); } catch {} });
-  if (data.error && data.matches.length === 0) return <Setup msg={data.error} />;
+  if (data.error && data.matches.length === 0) return <NoOdds msg={data.error} title="Les pronos du jour" />;
   const picks = dailyPicks(data.matches);
   const scope = picks.scope || "today";
   const combos = dailyCombos(data.matches);
