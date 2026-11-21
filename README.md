@@ -37,3 +37,5 @@ Le projet Vercel est relié à ce dépôt : chaque `git push` sur une branche cr
 - `components/` : les blocs d'interface (cartes de pronos, analyse visuelle, graphiques…)
 - `lib/` : le moteur : cotes (`odds.js`), modèle Poisson / Dixon-Coles (`edge.js`), règles apprises sur l'historique (`learned.js`), mouvements de cotes (`steam.js`), Elo tennis (`tennisElo.js`), pronos multi-sports (`sportpicks.js`)
 - `scripts/build-tennis-elo.mjs` : reconstruit le classement Elo tennis (exécuté automatiquement à chaque déploiement)
+
+> Déploiement automatique actif : chaque push sur `main` met à jour https://fightedge.vercel.app
