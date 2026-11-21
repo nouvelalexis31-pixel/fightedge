@@ -1,0 +1,15 @@
+{
+ "buildCommand": "node scripts/build-tennis-elo.mjs lib/tennis_elo.json || true; next build",
+ "installCommand": "npm install",
+ "framework": "nextjs",
+ "crons": [
+  {
+   "path": "/api/cron/refresh",
+   "schedule": "0 6 * * *"
+  },
+  {
+   "path": "/api/cron/refresh",
+   "schedule": "0 19 * * *"
+  }
+ ]
+}

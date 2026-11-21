@@ -1,0 +1,22 @@
+{
+  "name": "fightedge",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "elo": "node scripts/build-tennis-elo.mjs lib/tennis_elo.json"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@vercel/blob": "2.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.5",
+    "postcss": "8.5.33",
+    "tailwindcss": "4.3.5"
+  }
+}
