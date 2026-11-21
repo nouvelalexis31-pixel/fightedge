@@ -10,6 +10,8 @@ import { PickCard } from "@/components/PickCard";
 import { MatchCard } from "@/components/MatchCard";
 import { Setup } from "@/components/Setup";
 import NoOdds from "@/components/NoOdds";
+import { Suspense } from "react";
+import AiDashboard from "@/components/AiDashboard";
 import { dayKey, fmtDateTime, fmtTime, odd, signed, todayKey } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -23,9 +25,9 @@ const Head = ({ t, href, more = "Tout voir" }) => (
 
 export default async function Home() {
   const data = await loadEnriched();
-  if (data.error && data.matches.length === 0) return <NoOdds msg={data.error} title="Pronos IA et analyses du jour" />;
+  if (data.error && data.matches.length === 0) return <NoOdds msg={data.error} title="Pronos IA et analyses du jour" extra={<Suspense fallback={null}><AiDashboard /></Suspense>} />;
   const all = data.matches;
-  if (all.length === 0) return <NoOdds msg={data.error || "aucun match coté pour le moment"} title="Pronos IA et analyses du jour" />;
+  if (all.length === 0) return <NoOdds msg={data.error || "aucun match coté pour le moment"} title="Pronos IA et analyses du jour" extra={<Suspense fallback={null}><AiDashboard /></Suspense>} />;
   const now = Date.now();
   const today = todayKey();
   const upcoming = all.filter((m) => +new Date(m.start) > now - 3 * 3600e3);
@@ -76,6 +78,8 @@ export default async function Home() {
           <Link href="/bilan" className="tile"><b className="text-base">Bilan IA</b><span className="muted text-sm">résultats vérifiés</span></Link>
         </div>
       </section>
+
+      <Suspense fallback={<p className="card p-4 text-xs text-muted">Chargement des pronos IA…</p>}><AiDashboard /></Suspense>
 
       {top.length > 0 && (
         <section>

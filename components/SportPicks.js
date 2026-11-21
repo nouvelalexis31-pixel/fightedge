@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { sportPicks } from "@/lib/sportpicks";
 import { Badge } from "@/components/Team";
+import Ring from "@/components/Ring";
 import { fmtDateTime, dayKey, todayKey } from "@/lib/format";
 
 const P = (p) => Math.round(p * 100) + " %";
@@ -27,8 +28,7 @@ export default async function SportPicks() {
                   <span className="text-xs font-semibold text-muted">vs</span>
                   <span className="flex min-w-0 items-center justify-end gap-2"><span className="truncate text-right text-sm font-bold">{x.away.name}</span><Badge src={x.away.logo} name={x.away.name} size={28} /></span>
                 </div>
-                <div className="flex items-baseline justify-between gap-3"><span className="text-sm font-extrabold text-brand">{x.pick}</span><span className="num text-sm font-bold">{P(x.p)} · cote juste {o2(x.fair)}</span></div>
-                <div className="pbar" aria-hidden><span style={{ width: `${Math.round(x.p * 100)}%` }} /></div>
+                <div className="flex items-center gap-3"><Ring value={x.p} size={52} /><span className="min-w-0"><span className="block text-sm font-extrabold text-brand">{x.pick}</span><span className="num block text-xs font-bold">Probabilité {P(x.p)} · cote juste {o2(x.fair)}</span></span></div>
                 <div className="rounded-lg bg-card2 px-2.5 py-2 text-[11px] leading-relaxed"><b className="text-brand">Pourquoi ce choix ?</b> {x.why}</div>
                 <span className="text-xs font-bold text-brand">Suivre le score en direct →</span>
               </Link>

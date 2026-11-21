@@ -7,6 +7,7 @@ import { loadHistory } from "@/lib/track";
 import { putJson, storeOn } from "@/lib/store";
 import { ruleKey } from "@/lib/rules";
 import { Badge } from "@/components/Team";
+import Ring from "@/components/Ring";
 import { fmtDateTime, todayKey, dayKey, fmtDayShort } from "@/lib/format";
 import { frComp } from "@/lib/frcomp";
 import { fr } from "@/lib/fr";
@@ -173,7 +174,7 @@ export default async function EspnPicks({ scopeNote }) {
               <span className="text-xs font-semibold text-muted">vs</span>
               <span className="flex min-w-0 items-center justify-end gap-2"><span className="truncate text-right text-sm font-bold">{fr(S.away.name)}</span><Badge src={S.away.crest} name={S.away.name} size={32} /></span>
             </div>
-            <div className="flex items-baseline justify-between gap-3"><span className="text-sm font-extrabold text-brand">{main.label}</span><span className="num text-sm font-bold">{P(main.p)}{pickOdd ? ` · cote ${o2(pickOdd)}` : ""}</span></div>
+            <div className="flex items-center gap-3"><Ring value={main.p} size={52} /><span className="min-w-0 flex-1"><span className="block text-sm font-extrabold text-brand">{main.label}</span><span className="num block text-xs font-bold">Probabilité {P(main.p)}{pickOdd ? ` · cote ${o2(pickOdd)}` : ` · cote juste ${o2(1 / main.p)}`}</span></span></div>
             {goal && <div className="flex items-baseline justify-between gap-3 text-sm"><span className="font-semibold">{goal.label}</span><span className="num font-bold">{P(goal.p)}{goal.odd ? ` · cote ${o2(goal.odd)}` : ""}</span></div>}
             {extra && <div className="flex items-baseline justify-between gap-3 text-sm"><span className="font-semibold">{extra.group} : {extra.label}{extra.kind === "value" ? <span className="ml-1.5 rounded bg-good/10 px-1 text-[10px] font-bold text-good">plus-value</span> : null}</span><span className="num font-bold">{P(extra.p)}{extra.offer ? ` · cote ${o2(extra.offer.odds)}` : ` · juste ${o2(extra.fair)}`}</span></div>}
             {cote && (cote.h || cote.a) ? (

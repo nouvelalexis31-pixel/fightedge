@@ -1,3 +1,4 @@
+import VisualAnalysis from "@/components/VisualAnalysis";
 import Link from "next/link";
 import { frComp } from "@/lib/frcomp";
 import { notFound } from "next/navigation";
@@ -11,7 +12,7 @@ import AutoRefresh from "@/components/AutoRefresh";
 import { matchCenter } from "@/lib/matchcenter";
 import { TabNav, EdgePicks, EdgeMarkets, TeamCompare, Streaks, LastGames, LeagueTable } from "@/components/MatchCenter";
 
-const ETABS = [["resume", "Résumé"], ["pronos", "Pronos"], ["stats", "Stats équipes"], ["matchs", "Derniers matchs"], ["classement", "Classement"], ["compos", "Compositions"], ["cotes", "Cotes"]];
+const ETABS = [["resume", "Résumé"], ["visuel", "Analyse visuelle"], ["pronos", "Pronos"], ["stats", "Stats équipes"], ["matchs", "Derniers matchs"], ["classement", "Classement"], ["compos", "Compositions"], ["cotes", "Cotes"]];
 
 const P = (p) => Math.round(p * 100) + " %";
 const o2 = (v) => (v ? Number(v).toFixed(2).replace(".", ",") : "—");
@@ -230,10 +231,12 @@ export default async function EspnMatch({ sid, tab: tab0 }) {
       {tab === "resume" && (
         <>
           <LiveBlock S={S} />
+          {C?.E && <VisualAnalysis E={C.E} home={S.home.name} away={S.away.name} compact />}
           <EdgePicks E={C?.E} title="Les meilleurs pronos du match" limit={6} />
           <AnalysisBlock S={S} A={A} />
         </>
       )}
+      {tab === "visuel" && <VisualAnalysis E={C?.E} tH={C?.tH} tA={C?.tA} home={S.home.name} away={S.away.name} start={S.start} />}
       {tab === "pronos" && (C?.E ? <><EdgePicks E={C.E} /><EdgeMarkets E={C.E} /></> : <AnalysisBlock S={S} A={A} />)}
       {tab === "stats" && <><TeamCompare S={S} C={C} /><Streaks S={S} C={C} /></>}
       {tab === "matchs" && <><LastGames S={S} C={C} /><FormH2H S={S} /></>}

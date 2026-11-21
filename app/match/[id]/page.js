@@ -20,6 +20,7 @@ import { FavButton } from "@/components/FavButton";
 import EspnMatch, { LiveBlock, FormH2H, Lineups } from "@/components/EspnMatch";
 import { getSummary } from "@/lib/espnsum";
 import { matchCenter, oddsBridge } from "@/lib/matchcenter";
+import VisualAnalysis from "@/components/VisualAnalysis";
 import { EdgePicks, EdgeMarkets, TeamCompare, Streaks, LastGames, LeagueTable } from "@/components/MatchCenter";
 
 export const revalidate = 1800;
@@ -97,7 +98,7 @@ function ModelBlock({ m }) {
   );
 }
 
-const TABS = [["apercu", "Aperçu"], ["pronos", "Tous les pronos"], ["analyse", "Analyse IA"], ["paris", "Tous les paris"], ["cotes", "Comparateur de cotes"], ["stats", "Statistiques"], ["equipes", "Stats équipes"], ["classement", "Classement"], ["compos", "Compositions"]];
+const TABS = [["apercu", "Aperçu"], ["visuel", "Analyse visuelle"], ["pronos", "Tous les pronos"], ["analyse", "Analyse IA"], ["paris", "Tous les paris"], ["cotes", "Comparateur de cotes"], ["stats", "Statistiques"], ["equipes", "Stats équipes"], ["classement", "Classement"], ["compos", "Compositions"]];
 
 export default async function MatchPage({ params, searchParams }) {
   const { id } = await params;
@@ -155,6 +156,7 @@ export default async function MatchPage({ params, searchParams }) {
         <section className="space-y-3">
           <h2 className="text-xl font-extrabold tracking-tight">Les paris les plus solides</h2>
           {a.bets.length ? <div className="grid gap-4 md:grid-cols-2">{a.bets.slice(0, 2).map((p, n) => <PickCard key={p.id} p={p} rank={n + 1} icon={sport.icon} compact />)}</div> : <p className="card p-4 text-sm text-muted">Aucun pari ne ressort nettement sur ce match : le marché est très équilibré.</p>}
+          {C?.E && <VisualAnalysis E={C.E} home={m.home} away={m.away} compact />}
           {C?.E && <EdgePicks E={C.E} title="Pronos FightEdge (tous marchés)" limit={6} />}
           <p className="text-xs text-muted">{C?.E ? `« Tous les pronos » : les ${C.E.groups.reduce((n, g) => n + g.items.length, 0)} issues estimées du match. ` : ""}Ouvrez « Analyse IA » pour le scénario, les forces et faiblesses et les risques, « Tous les paris » pour la liste complète et « Comparateur de cotes » pour voir chaque bookmaker.</p>
         </section>
@@ -166,6 +168,7 @@ export default async function MatchPage({ params, searchParams }) {
           {lineup ? <p className="text-xs text-muted">Composition probable disponible : consultez l'onglet « Compositions » pour confirmer la présence du joueur.</p> : <p className="text-xs text-muted">Composition pas encore publiée : le statut titulaire n'est pas vérifiable pour le moment.</p>}
         </section>
       )}
+      {tab === "visuel" && <VisualAnalysis E={C?.E} tH={C?.tH} tA={C?.tA} home={m.home} away={m.away} start={m.start} />}
       {tab === "pronos" && (C?.E ? <><EdgePicks E={C.E} /><EdgeMarkets E={C.E} /></> : <><ModelBlock m={m} />{!m.model && <p className="card p-4 text-sm text-muted">Pronos détaillés disponibles uniquement pour le football quand l'historique des équipes est fourni par la source.</p>}</>)}
       {tab === "equipes" && (sum ? <><TeamCompare S={sum} C={C} /><Streaks S={sum} C={C} /><LastGames S={sum} C={C} /><FormH2H S={sum} /></> : <p className="card p-4 text-sm text-muted">Statistiques d'équipes disponibles pour le football uniquement (source ESPN).</p>)}
       {tab === "classement" && (sum ? <LeagueTable S={sum} /> : <p className="card p-4 text-sm text-muted">Classement non disponible pour ce match.</p>)}
